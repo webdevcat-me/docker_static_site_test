@@ -4,8 +4,6 @@ defmodule Mix.Tasks.Build do
 
   use Mix.Task
 
-  @output_directory "/public"
-
   @markup """
     <!DOCTYPE html>
     <html>
@@ -18,7 +16,9 @@ defmodule Mix.Tasks.Build do
   def run(_args) do
     Mix.shell().info("running build task")
 
-    File.mkdir_p!(@output_directory)
-    @output_directory |> Path.join("index.html") |> File.write!(@markup)
+    output_directory = Application.fetch_env!(:static_site, :output_directory)
+
+    File.mkdir_p!(output_directory)
+    output_directory |> Path.join("index.html") |> File.write!(@markup)
   end
 end
